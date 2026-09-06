@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Pixiemint Canva Gallery | Faceless Illustration, Magic Haldi & Wedding Magic Portraits</title>
   <meta name="description" content="Official website for Pixiemint Canva Gallery. Delivering hand-painted Faceless Illustrations (with wooden easel stands), Magic Haldi Paintings & Wedding Magic Portraits across India. Prices starting from ₹500.">
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
@@ -17,24 +17,33 @@
       <div>Pixiemint <span style="color: var(--accent-mint);">Canva Gallery</span></div>
     </a>
 
-    <ul class="nav-links">
-      <li><a href="#hero" class="nav-link active">Home</a></li>
-      <li><a href="#catalog" class="nav-link">Our Paintings & Pricing</a></li>
-      <li><a href="#visualizer" class="nav-link">Easel Preview</a></li>
-      <li><a href="#tracking" class="nav-link">Track Delivery</a></li>
-      <li><a href="#commission" class="nav-link">Custom Request</a></li>
-    </ul>
+    <!-- Hamburger Icon for Mobile -->
+    <button class="mobile-toggle" onclick="toggleMobileNav()" aria-label="Toggle Navigation Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
 
-    <div class="nav-actions">
-      <a href="{{ instagram_url }}" target="_blank" class="btn-ig">
-        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-        @pixiemintcanvagallery
-      </a>
+    <div class="nav-menu-wrapper" id="navMenuWrapper">
+      <ul class="nav-links">
+        <li><a href="#hero" class="nav-link active" onclick="closeMobileNav()">Home</a></li>
+        <li><a href="#catalog" class="nav-link" onclick="closeMobileNav()">Our Paintings & Pricing</a></li>
+        <li><a href="#visualizer" class="nav-link" onclick="closeMobileNav()">Easel Preview</a></li>
+        <li><a href="#tracking" class="nav-link" onclick="closeMobileNav()">Track Delivery</a></li>
+        <li><a href="#commission" class="nav-link" onclick="closeMobileNav()">Custom Request</a></li>
+      </ul>
 
-      <button class="btn-cart" onclick="toggleCartDrawer()">
-        🛒 Cart
-        <span class="cart-count" id="cartCount">0</span>
-      </button>
+      <div class="nav-actions">
+        <a href="{{ instagram_url }}" target="_blank" class="btn-ig">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          @pixiemintcanvagallery
+        </a>
+
+        <button class="btn-cart" onclick="toggleCartDrawer(); closeMobileNav();">
+          🛒 Cart
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
     </div>
   </nav>
 
@@ -44,7 +53,7 @@
       <div class="badge-row">
         <span class="pill-badge">✨ Prices Starting From ₹500</span>
         <span class="pill-badge">🪵 Faceless (Easel Included)</span>
-        <span class="pill-badge">💛 Magic Haldi & Wedding Portraits</span>
+        <span class="pill-badge">🚚 Express Delivery</span>
       </div>
       <h1><span>Pixiemint Canva</span> Gallery</h1>
       <p class="hero-subtitle">
@@ -60,12 +69,12 @@
       <img id="heroArtworkImg" src="{{ url_for('static', filename='images/paintings/faceless_couple.jpg') }}" alt="Pixiemint Canva Gallery Painting">
       <div class="hero-floating-card">
         <div>
-          <div style="font-size: 0.8rem; color: var(--accent-mint-light); font-weight: 700; text-transform: uppercase;">Faceless Illustration</div>
-          <div style="font-family: var(--font-serif); font-weight: 600; font-size: 1.1rem;">Includes Wooden Easel Stand</div>
+          <div style="font-size: 0.75rem; color: var(--accent-mint-light); font-weight: 700; text-transform: uppercase;">Faceless Illustration</div>
+          <div style="font-family: var(--font-serif); font-weight: 600; font-size: 1rem;">Includes Wooden Easel Stand</div>
         </div>
         <div style="text-align: right;">
-          <div style="font-size: 0.75rem; color: var(--text-muted);">Starts at</div>
-          <div style="color: var(--accent-gold); font-weight: 700; font-size: 1.2rem;">₹500</div>
+          <div style="font-size: 0.7rem; color: var(--text-muted);">Starts at</div>
+          <div style="color: var(--accent-gold); font-weight: 700; font-size: 1.1rem;">₹500</div>
         </div>
       </div>
     </div>
@@ -214,16 +223,16 @@
   <section id="commission" class="commission-section">
     <div class="commission-grid">
       <div>
-        <span style="color: var(--accent-mint-light); font-weight: 700; text-transform: uppercase; font-size: 0.9rem;">Custom Order</span>
-        <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin: 0.5rem 0 1rem 0;">Submit Custom Canvas Request</h2>
-        <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 1.05rem;">
+        <span style="color: var(--accent-mint-light); font-weight: 700; text-transform: uppercase; font-size: 0.85rem;">Custom Order</span>
+        <h2 style="font-family: var(--font-serif); font-size: 2.2rem; margin: 0.5rem 0 1rem 0;">Submit Custom Canvas Request</h2>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 1rem;">
           Upload your photos and specify your requirements for custom Faceless Illustration (with wooden easel stand), Magic Haldi Paintings, or Wedding Magic Portraits.
         </p>
         <div style="background: var(--bg-card); padding: 1.2rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; gap: 1rem; align-items: center;">
-          <div style="font-size: 2rem;">📸</div>
+          <div style="font-size: 1.8rem;">📸</div>
           <div>
-            <div style="font-weight: 600;">Prefer Direct WhatsApp / Instagram Upload?</div>
-            <a href="{{ instagram_url }}" target="_blank" style="color: var(--accent-mint-light); font-weight: 700; text-decoration: underline;">DM @pixiemintcanvagallery on IG</a>
+            <div style="font-weight: 600; font-size: 0.95rem;">Prefer Direct WhatsApp / Instagram Upload?</div>
+            <a href="{{ instagram_url }}" target="_blank" style="color: var(--accent-mint-light); font-weight: 700; text-decoration: underline; font-size: 0.9rem;">DM @pixiemintcanvagallery on IG</a>
           </div>
         </div>
       </div>
@@ -298,10 +307,10 @@
 
   <!-- Footer -->
   <footer>
-    <div class="footer-grid" style="grid-template-columns: 2fr 1fr;">
+    <div class="footer-grid">
       <div>
         <div class="brand-logo" style="margin-bottom: 1rem;">
-          <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Pixiemint Canva Gallery Logo" class="brand-logo-img" style="width: 44px; height: 44px;">
+          <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Pixiemint Canva Gallery Logo" class="brand-logo-img" style="width: 40px; height: 40px;">
           <div>Pixiemint <span style="color: var(--accent-mint);">Canva Gallery</span></div>
         </div>
         <p>Faceless Illustration (with wooden easel stand), Magic Haldi Paintings, and Wedding Magic Portraits delivered across India. Prices starting from ₹500.</p>

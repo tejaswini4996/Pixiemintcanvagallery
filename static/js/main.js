@@ -1,3 +1,18 @@
+// Mobile Navigation Menu Toggle
+function toggleMobileNav() {
+  const wrapper = document.getElementById('navMenuWrapper');
+  if (wrapper) {
+    wrapper.classList.toggle('active');
+  }
+}
+
+function closeMobileNav() {
+  const wrapper = document.getElementById('navMenuWrapper');
+  if (wrapper) {
+    wrapper.classList.remove('active');
+  }
+}
+
 // Shopping Cart State
 let cartItems = [];
 
@@ -135,33 +150,33 @@ function renderProductsGrid(artworks) {
   grid.innerHTML = html;
 }
 
-// Modal Size Picker
+// Mobile-Responsive Modal Size Picker
 function openProductModal(art) {
   let sizesOptionsHtml = '';
   art.sizes.forEach(s => {
     sizesOptionsHtml += `<option value="${s.size}" data-price="${s.price}">${s.size} – ₹${s.price}</option>`;
   });
 
-  const displayNote = art.has_easel ? '<div style="background: rgba(72, 201, 176, 0.15); color: var(--accent-mint-light); border: 1px solid var(--accent-mint); padding: 0.5rem 0.8rem; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 600; margin-bottom: 1rem;">🪵 Includes Handcrafted Wooden Easel Display Stand</div>' : '';
+  const displayNote = art.has_easel ? '<div style="background: rgba(72, 201, 176, 0.15); color: var(--accent-mint-light); border: 1px solid var(--accent-mint); padding: 0.5rem 0.8rem; border-radius: var(--radius-sm); font-size: 0.82rem; font-weight: 600; margin-bottom: 0.8rem;">🪵 Includes Handcrafted Wooden Easel Display Stand</div>' : '';
 
   const modalHtml = `
-    <div id="productModal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 3000; display: flex; align-items: center; justify-content: center; padding: 2rem;">
-      <div style="background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border-color); max-width: 720px; width: 100%; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; position: relative;">
-        <button onclick="closeProductModal()" style="position: absolute; top: 15px; right: 15px; background: transparent; border: none; color: white; font-size: 1.5rem; cursor: pointer; z-index: 10;">×</button>
+    <div id="productModal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh; background: rgba(0,0,0,0.88); backdrop-filter: blur(10px); z-index: 3000; display: flex; align-items: center; justify-content: center; padding: 1rem; overflow-y: auto;">
+      <div style="background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border-color); max-width: 720px; width: 100%; max-height: 90vh; max-height: 90dvh; overflow-y: auto; display: flex; flex-direction: column; position: relative;">
+        <button onclick="closeProductModal()" style="position: absolute; top: 12px; right: 15px; background: rgba(0,0,0,0.6); border: 1px solid var(--border-color); border-radius: 50%; width: 32px; height: 32px; color: white; font-size: 1.2rem; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center;">×</button>
         
-        <div style="background: #000; display: flex; align-items: center; justify-content: center;">
-          <img src="/static/images/paintings/${art.image_filename}" style="max-height: 380px; width: 100%; object-fit: contain;">
+        <div style="background: #000; padding: 1rem; text-align: center; border-bottom: 1px solid var(--border-color);">
+          <img src="/static/images/paintings/${art.image_filename}" style="max-height: 260px; width: 100%; object-fit: contain;">
         </div>
 
-        <div style="padding: 2rem; display: flex; flex-direction: column;">
-          <div style="color: var(--accent-gold); font-size: 0.8rem; font-weight: 700; text-transform: uppercase;">${art.category}</div>
-          <h3 style="font-family: var(--font-serif); font-size: 1.6rem; margin-bottom: 0.6rem;">${art.title}</h3>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">${art.description}</p>
+        <div style="padding: 1.4rem; display: flex; flex-direction: column;">
+          <div style="color: var(--accent-gold); font-size: 0.78rem; font-weight: 700; text-transform: uppercase;">${art.category}</div>
+          <h3 style="font-family: var(--font-serif); font-size: 1.4rem; margin-bottom: 0.5rem;">${art.title}</h3>
+          <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1rem;">${art.description}</p>
           
           ${displayNote}
 
-          <div style="margin-bottom: 1.5rem;">
-            <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 0.4rem;">Select Size</label>
+          <div style="margin-bottom: 1.2rem;">
+            <label style="font-size: 0.82rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 0.4rem;">Select Size</label>
             <select id="modalSizeSelect" class="form-control">
               ${sizesOptionsHtml}
             </select>
@@ -204,7 +219,7 @@ function addModalItemToCart(artId, title, imageFilename, hasEasel) {
   toggleCartDrawer();
 }
 
-// Location-Aware Checkout Modal
+// Mobile-Responsive Location Checkout Modal
 function openCheckoutModal() {
   if (cartItems.length === 0) {
     alert("Your cart is empty.");
@@ -215,26 +230,26 @@ function openCheckoutModal() {
   cartItems.forEach(i => subtotal += i.price * i.qty);
 
   const modalHtml = `
-    <div id="checkoutModal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 3500; display: flex; align-items: center; justify-content: center; padding: 2rem;">
-      <div style="background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border-color); max-width: 560px; width: 100%; padding: 2.2rem; position: relative;">
-        <button onclick="closeCheckoutModal()" style="position: absolute; top: 15px; right: 15px; background: transparent; border: none; color: white; font-size: 1.5rem; cursor: pointer;">×</button>
+    <div id="checkoutModal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh; background: rgba(0,0,0,0.88); backdrop-filter: blur(10px); z-index: 3500; display: flex; align-items: center; justify-content: center; padding: 1rem; overflow-y: auto;">
+      <div style="background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border-color); max-width: 560px; width: 100%; max-height: 90vh; max-height: 90dvh; overflow-y: auto; padding: 1.5rem; position: relative;">
+        <button onclick="closeCheckoutModal()" style="position: absolute; top: 12px; right: 15px; background: rgba(0,0,0,0.6); border: 1px solid var(--border-color); border-radius: 50%; width: 32px; height: 32px; color: white; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center;">×</button>
         
-        <h3 style="font-family: var(--font-serif); font-size: 1.6rem; margin-bottom: 0.4rem;">Express Delivery Checkout</h3>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.2rem;">Item Subtotal: <strong style="color: var(--accent-mint-light);">₹${subtotal}</strong></p>
+        <h3 style="font-family: var(--font-serif); font-size: 1.4rem; margin-bottom: 0.3rem;">Express Delivery Checkout</h3>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1rem;">Item Subtotal: <strong style="color: var(--accent-mint-light);">₹${subtotal}</strong></p>
 
         <form id="checkoutForm" onsubmit="processCheckout(event)">
           <div class="form-group">
             <label>Full Name *</label>
             <input type="text" id="chkName" class="form-control" placeholder="Recipient Name" required>
           </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
             <div class="form-group">
               <label>Email Address *</label>
-              <input type="email" id="chkEmail" class="form-control" placeholder="Order receipt destination" required>
+              <input type="email" id="chkEmail" class="form-control" placeholder="Order receipt" required>
             </div>
             <div class="form-group">
               <label>Phone Number *</label>
-              <input type="tel" id="chkPhone" class="form-control" placeholder="+91 9876543210" required>
+              <input type="tel" id="chkPhone" class="form-control" placeholder="Mobile Number" required>
             </div>
           </div>
           <div class="form-group">
@@ -242,7 +257,7 @@ function openCheckoutModal() {
             <textarea id="chkAddress" class="form-control" rows="2" placeholder="Street, Flat/House No." required></textarea>
           </div>
           
-          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.8rem;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.6rem;">
             <div class="form-group">
               <label>City *</label>
               <input type="text" id="chkCity" class="form-control" placeholder="City" oninput="updateLocationShippingFee()" required>
@@ -257,22 +272,21 @@ function openCheckoutModal() {
             </div>
           </div>
 
-          <!-- Dynamic Shipping Fee Summary Box -->
-          <div id="shippingSummaryBox" style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.2rem;">
-            <div style="display: flex; justify-content: space-between; font-size: 0.88rem; margin-bottom: 0.4rem;">
+          <div id="shippingSummaryBox" style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.85rem; margin-bottom: 1rem;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.3rem;">
               <span style="color: var(--text-muted);">Delivery Zone:</span>
               <span id="shipZoneVal" style="font-weight: 600;">Standard Regional</span>
             </div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.88rem; margin-bottom: 0.4rem;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.3rem;">
               <span style="color: var(--text-muted);">Estimated Window:</span>
               <span id="shipWindowVal" style="font-weight: 600;">4-6 Business Days</span>
             </div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.88rem; margin-bottom: 0.4rem;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.3rem;">
               <span style="color: var(--text-muted);">Location Delivery Fee:</span>
               <span id="shipFeeVal" style="font-weight: 700; color: var(--accent-gold);">₹120</span>
             </div>
-            <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 0.6rem 0;">
-            <div style="display: flex; justify-content: space-between; font-size: 1.1rem; font-weight: 700;">
+            <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 0.5rem 0;">
+            <div style="display: flex; justify-content: space-between; font-size: 1rem; font-weight: 700;">
               <span>Total Amount:</span>
               <span id="finalTotalVal" style="color: var(--accent-mint-light);">₹${subtotal + 120}</span>
             </div>
