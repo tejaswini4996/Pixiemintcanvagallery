@@ -1,72 +1,82 @@
 import sqlite3
 import os
 import json
+import tempfile
 
-DB_FILE = 'pixiemint_gallery.db'
+def get_db_path():
+    # Use /tmp on Vercel or read-only serverless environment
+    if os.environ.get('VERCEL') or not os.access('.', os.W_OK):
+        return os.path.join(tempfile.gettempdir(), 'pixiemint_gallery.db')
+    return 'pixiemint_gallery.db'
 
 def get_db_connection():
-    conn = sqlite3.connect(DB_FILE)
+    db_path = get_db_path()
+    conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     return conn
 
 def init_db():
-    if os.path.exists(DB_FILE):
-        os.remove(DB_FILE)
+    db_path = get_db_path()
+    
+    # Check if DB already populated in /tmp
+    try:
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS artworks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            category TEXT NOT NULL,
+            description TEXT NOT NULL,
+            image_filename TEXT NOT NULL,
+            base_price REAL NOT NULL,
+            badge TEXT,
+            has_easel INTEGER DEFAULT 0,
+            sizes_json TEXT NOT NULL
+        )
+        ''')
 
-    conn = get_db_connection()
-    cursor = conn.cursor()
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS orders (
+            order_id TEXT PRIMARY KEY,
+            customer_name TEXT NOT NULL,
+            customer_email TEXT NOT NULL,
+            phone TEXT NOT NULL,
+            address TEXT NOT NULL,
+            city TEXT NOT NULL,
+            pincode TEXT NOT NULL,
+            total_amount REAL NOT NULL,
+            items_json TEXT NOT NULL,
+            current_step INTEGER DEFAULT 1,
+            step_status TEXT DEFAULT 'Order Placed & Confirmed',
+            carrier TEXT DEFAULT 'PixieMint Express Courier',
+            tracking_number TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+        ''')
 
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS artworks (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NOT NULL,
-        category TEXT NOT NULL,
-        description TEXT NOT NULL,
-        image_filename TEXT NOT NULL,
-        base_price REAL NOT NULL,
-        badge TEXT,
-        has_easel INTEGER DEFAULT 0,
-        sizes_json TEXT NOT NULL
-    )
-    ''')
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS commissions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            customer_name TEXT NOT NULL,
+            email TEXT NOT NULL,
+            phone TEXT NOT NULL,
+            art_type TEXT NOT NULL,
+            preferred_size TEXT NOT NULL,
+            details TEXT NOT NULL,
+            photos_json TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+        ''')
 
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS orders (
-        order_id TEXT PRIMARY KEY,
-        customer_name TEXT NOT NULL,
-        customer_email TEXT NOT NULL,
-        phone TEXT NOT NULL,
-        address TEXT NOT NULL,
-        city TEXT NOT NULL,
-        pincode TEXT NOT NULL,
-        total_amount REAL NOT NULL,
-        items_json TEXT NOT NULL,
-        current_step INTEGER DEFAULT 1,
-        step_status TEXT DEFAULT 'Order Placed & Confirmed',
-        carrier TEXT DEFAULT 'PixieMint Express Courier',
-        tracking_number TEXT,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )
-    ''')
+        cursor.execute('SELECT COUNT(*) FROM artworks')
+        if cursor.fetchone()[0] == 0:
+            seed_artworks(cursor)
 
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS commissions (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        customer_name TEXT NOT NULL,
-        email TEXT NOT NULL,
-        phone TEXT NOT NULL,
-        art_type TEXT NOT NULL,
-        preferred_size TEXT NOT NULL,
-        details TEXT NOT NULL,
-        photos_json TEXT,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )
-    ''')
-
-    seed_artworks(cursor)
-    conn.commit()
-    conn.close()
-    print("Database updated: Added Wedding Magic Portraits!")
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print(f"Database init warning: {e}")
 
 def seed_artworks(cursor):
     faceless_sizes = [
